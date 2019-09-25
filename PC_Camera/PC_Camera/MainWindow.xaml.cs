@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 
+
 namespace PC_Camera
 {
     /// <summary>
@@ -32,6 +33,7 @@ namespace PC_Camera
         string current_time = "";
         string current_dir = "";
         bool check = false;
+        string path = @"C:\Users\ghali\AppData\Local\Temp\PC Camera\settings.txt";
         public MainWindow()
         {
             string location = @"D:\New folder12\PC Camera\";
@@ -42,6 +44,28 @@ namespace PC_Camera
             _CameraChoice.UpdateDeviceList();
             var moniker = _CameraChoice.Devices[0].Mon;
             ResolutionList resolutions = Camera.GetResolutionList(moniker);
+            if (!Directory.Exists(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\"))
+            {
+                Directory.CreateDirectory(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\");
+            }
+
+            //if setting file exists
+            if (!File.Exists(path))
+            {
+                // Create a file to write to.
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.WriteLine(min);
+                }
+            }
+            using (StreamReader sr = File.OpenText(path))
+            {
+                string s = "";
+                s = sr.ReadLine();
+                min = Convert.ToInt32(s);
+
+               // time_out.Text += Convert.ToString(min);
+            }
 
             Res.Text += "Resolutions " + "\n";
             foreach (Resolution r in resolutions)
@@ -157,6 +181,32 @@ namespace PC_Camera
                 check = true;
             }
             catch(Exception ex)
+            {
+                time_out.Text += ex.ToString() + "\n";
+            }
+        }
+
+        private void Set_Def_Click(object sender, RoutedEventArgs e)
+        {
+
+            try
+            {
+              
+                min = Convert.ToInt32(Def_Mins.Text);
+                time_out.Text += "waiting for minutes to update... " + "\n";
+                Def_Mins.Text = "";
+                check = true;
+                if (!Directory.Exists(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\"))
+                {
+                    Directory.CreateDirectory(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\");
+                }
+                using (StreamWriter sw = File.CreateText(path))
+                {
+                    sw.Write(min);
+                    sw.Close();
+                }
+            }
+            catch (Exception ex)
             {
                 time_out.Text += ex.ToString() + "\n";
             }
