@@ -9,8 +9,8 @@
     <Grid>
         <TextBox x:Name="Res" HorizontalAlignment="Left" Height="142" Margin="10,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123"/>
         <TextBlock HorizontalAlignment="Left" Margin="164,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Height="22"><Run Text="Time in Mins"/><Run Text=":"/></TextBlock>
-        <TextBox x:Name="mins" HorizontalAlignment="Left" Height="23" Margin="276,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="set_mins" Content="Set" HorizontalAlignment="Left" Margin="418,26,0,0" VerticalAlignment="Top" Width="53" Height="22"/>
+        <TextBox x:Name="mins_num" HorizontalAlignment="Left" Height="23" Margin="276,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="set_mins" Content="Set" HorizontalAlignment="Left" Margin="418,26,0,0" VerticalAlignment="Top" Width="53" Height="22" Click="Set_mins_Click"/>
         <TextBox x:Name="time_out" HorizontalAlignment="Left" Height="215" Margin="10,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123"/>
 
 
