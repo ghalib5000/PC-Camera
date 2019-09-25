@@ -7,11 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="Res" HorizontalAlignment="Left" Height="142" Margin="10,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123"/>
-        <TextBlock HorizontalAlignment="Left" Margin="164,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Height="22"><Run Text="Time in Mins"/><Run Text=":"/></TextBlock>
-        <TextBox x:Name="mins_num" HorizontalAlignment="Left" Height="23" Margin="276,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="set_mins" Content="Set" HorizontalAlignment="Left" Margin="418,26,0,0" VerticalAlignment="Top" Width="53" Height="22" Click="Set_mins_Click"/>
-        <TextBox x:Name="time_out" HorizontalAlignment="Left" Height="215" Margin="10,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="101*"/>
+            <ColumnDefinition Width="692*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="Res" HorizontalAlignment="Left" Height="345" Margin="10,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Grid.ColumnSpan="2"/>
+        <TextBlock HorizontalAlignment="Left" Margin="62.6,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Height="22" Grid.Column="1"><Run Text="Time in Mins"/><Run Text=":"/></TextBlock>
+        <TextBox x:Name="mins_num" HorizontalAlignment="Left" Height="23" Margin="174.6,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
+        <Button x:Name="set_mins" Content="Set" HorizontalAlignment="Left" Margin="316.6,26,0,0" VerticalAlignment="Top" Width="53" Height="22" Click="Set_mins_Click" Grid.Column="1"/>
+        <TextBox x:Name="time_out" HorizontalAlignment="Left" Height="345" Margin="62.2,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="586" Grid.Column="1"/>
 
 
     </Grid>

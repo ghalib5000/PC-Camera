@@ -19,6 +19,7 @@ using System.Timers;
 using System.Threading;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace PC_Camera
 {
@@ -27,8 +28,9 @@ namespace PC_Camera
     /// </summary>
     public partial class MainWindow : Window
     {
-        int min = 5;
+        int min = 1;
         string current_time = "";
+        string current_dir = "";
         public MainWindow()
         {
             string location = @"D:\New folder12\PC Camera\";
@@ -48,23 +50,45 @@ namespace PC_Camera
             Res.Text += "Starting Camera" + "\n";
 
             var timer = new System.Timers.Timer();
-            timer.Interval = 1000 * min;
+            timer.Interval = (1000 * 60) * min;
             timer.Elapsed += ontimed;
             timer.Start();
             void ontimed(object sender, System.Timers.ElapsedEventArgs e)
-            {
-                current_time = DateTime.Now.ToString("dddd dd MMMM yyyy hh.mm.ss tt");
+            {   //the time at which the image got taken
+                current_time = DateTime.Now.ToString("dddd dd MMMM yyyy hh.mm tt");
+                //the location at which the mage will be stored along with the generic location
+                //it is used to store images according to each day
+                current_dir = DateTime.Now.ToString("dddd dd MMMM yyyy")+"\\";
 
-                test(current_time);
-                pc_img(current_time);
-                time_out.Text = "image captured at time " + current_time+"\n";
-                timer.Interval = (1000 * 60) * min;
+                //checks for directories
+                if (!Directory.Exists(location + @"PC Images\"+current_dir))
+                {
+                    Directory.CreateDirectory(location + @"PC Images\" + current_dir);
+                }
+                if (!Directory.Exists(location + @"User Images\"+current_dir))
+                {
+                    Directory.CreateDirectory(location + @"User Images\" + current_dir);
+                }
+                this.Dispatcher.Invoke(() =>
+                {
+                    try
+                {
+                         user_image(current_time, current_dir);
+                         pc_img(current_time, current_dir);
+                        time_out.Text += "image captured at time " + current_time + "\n";
+                        timer.Interval = (1000 * 60) * min;
+                }
+                catch(Exception ex)
+                {
+                    time_out.Text = ex.ToString();
+                }
+                });
             }
-            void pc_img(string time)
+            void pc_img(string time,string dir)
             {
 
                 var image = ScreenCapture.CaptureDesktop();
-                image.Save(location + @"PC Images\" + time + " PC.jpg", ImageFormat.Jpeg);
+                image.Save(location + @"PC Images\"+dir + time + " PC.jpg", ImageFormat.Jpeg);
 
                 {
                     /*
@@ -80,30 +104,35 @@ namespace PC_Camera
                     */
                 }
             }
-            void test(string time)
+            void user_image(string time,string dir)
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    //   try
+                    try
                     {
-
-                        image_taker(time);
+                        image_taker(time,dir);
                     }
-                    //  catch (Exception ex)
+                      catch (Exception ex)
                     {
-                        //     time_out.Text = ex.ToString();
+                             time_out.Text = ex.ToString();
                     }
                 });
-
             }
-            void image_taker(string time)
+            void image_taker(string time,string dir)
             {
 
+                try
+                {
                 //image taker
-
                 cam.SetCamera(moniker, resolutions[0]);
-                cam.SnapshotSourceImage().Save(location + @"User Images\" + time + " User.png");
+                cam.SnapshotSourceImage().Save(location + @"User Images\"+dir + time + " User.png");
                 // cam.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    time_out.Text = ex.ToString();
+                }
+
             }
 
         }
@@ -111,6 +140,8 @@ namespace PC_Camera
         private void Set_mins_Click(object sender, RoutedEventArgs e)
         {
             min = Convert.ToInt32(mins_num.Text);
+            time_out.Text += "minutes updated to " + min+"\n";
+            mins_num.Text = "";
         }
     }
 }
