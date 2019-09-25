@@ -31,6 +31,7 @@ namespace PC_Camera
         int min = 1;
         string current_time = "";
         string current_dir = "";
+        bool check = false;
         public MainWindow()
         {
             string location = @"D:\New folder12\PC Camera\";
@@ -51,8 +52,11 @@ namespace PC_Camera
 
             var timer = new System.Timers.Timer();
             timer.Interval = (1000 * 60) * min;
+            //this will run the ontimed function when time is elapsed
             timer.Elapsed += ontimed;
+            //this starts the timer
             timer.Start();
+
             void ontimed(object sender, System.Timers.ElapsedEventArgs e)
             {   //the time at which the image got taken
                 current_time = DateTime.Now.ToString("dddd dd MMMM yyyy hh.mm tt");
@@ -73,15 +77,21 @@ namespace PC_Camera
                 {
                     try
                 {
-                         user_image(current_time, current_dir);
+
+                        user_image(current_time, current_dir);
                          pc_img(current_time, current_dir);
                         time_out.Text += "image captured at time " + current_time + "\n";
+                        if(check==true)
+                        {
+                        time_out.Text += "minutes updated to " + min + "\n";
+                            check = false;
+                        }
                         timer.Interval = (1000 * 60) * min;
                 }
                 catch(Exception ex)
                 {
-                    time_out.Text = ex.ToString();
-                }
+                        time_out.Text += ex.ToString() + "\n";
+                    }
                 });
             }
             void pc_img(string time,string dir)
@@ -130,7 +140,7 @@ namespace PC_Camera
                 }
                 catch (Exception ex)
                 {
-                    time_out.Text = ex.ToString();
+                    time_out.Text += ex.ToString() + "\n";
                 }
 
             }
@@ -139,9 +149,17 @@ namespace PC_Camera
 
         private void Set_mins_Click(object sender, RoutedEventArgs e)
         {
-            min = Convert.ToInt32(mins_num.Text);
-            time_out.Text += "minutes updated to " + min+"\n";
-            mins_num.Text = "";
+            try
+            {
+                min = Convert.ToInt32(mins_num.Text);
+                time_out.Text += "waiting for minutes to update... "+ "\n";
+                mins_num.Text = "";
+                check = true;
+            }
+            catch(Exception ex)
+            {
+                time_out.Text += ex.ToString() + "\n";
+            }
         }
     }
 }
