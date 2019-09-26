@@ -30,25 +30,31 @@ namespace PC_Camera
     public partial class MainWindow : Window
     {
         int min = 1;
-        string current_time = "";
-        string current_dir = "";
+        string current_time = DateTime.Now.ToString("dddd dd MMMM yyyy hh.mm tt");
+        string  current_dir = DateTime.Now.ToString("dddd dd MMMM yyyy")+"\\";
         bool check = false;
         string path = @"C:\Users\ghali\AppData\Local\Temp\PC Camera\settings.txt";
+        Logger logger;
+
+
+
         public MainWindow()
         {
             string location = @"D:\New folder12\PC Camera\";
-
             InitializeComponent();
+            //  location + dir + @"PC Images\" + time + " PC.jpg"
             CameraChoice _CameraChoice = new CameraChoice();
             CameraControl cam = new CameraControl();
             _CameraChoice.UpdateDeviceList();
             var moniker = _CameraChoice.Devices[0].Mon;
             ResolutionList resolutions = Camera.GetResolutionList(moniker);
+            DirCheck();
             if (!Directory.Exists(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\"))
             {
                 Directory.CreateDirectory(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\");
             }
 
+            logger = new Logger(location + current_dir + "log file.txt", current_time);
             //if setting file exists
             if (!File.Exists(path))
             {
@@ -68,16 +74,20 @@ namespace PC_Camera
             }
 
             Res.Text += "Resolutions " + "\n";
+            logger.Information("Resolutions", current_time);
             foreach (Resolution r in resolutions)
             {
                 Res.Text += Convert.ToString(r + "\n");
+                logger.Information(Convert.ToString(r), current_time);
             }
             Res.Text += "Starting Camera" + "\n";
-
+            logger.Information("Starting Camera", current_time);
             var timer = new System.Timers.Timer();
             timer.Interval = (1000 * 60) * min;
             //this will run the ontimed function when time is elapsed
             timer.Elapsed += ontimed;
+            Res.Text += "current mins are set to: " + Convert.ToString(min) + "\n";
+            logger.Information("current mins are set to:" + min, current_time);
             //this starts the timer
             timer.Start();
 
@@ -88,15 +98,7 @@ namespace PC_Camera
                 //it is used to store images according to each day
                 current_dir = DateTime.Now.ToString("dddd dd MMMM yyyy")+"\\";
 
-                //checks for directories
-                if (!Directory.Exists(location + @"PC Images\"+current_dir))
-                {
-                    Directory.CreateDirectory(location + @"PC Images\" + current_dir);
-                }
-                if (!Directory.Exists(location + @"User Images\"+current_dir))
-                {
-                    Directory.CreateDirectory(location + @"User Images\" + current_dir);
-                }
+                
                 this.Dispatcher.Invoke(() =>
                 {
                     try
@@ -104,10 +106,12 @@ namespace PC_Camera
 
                         user_image(current_time, current_dir);
                          pc_img(current_time, current_dir);
-                        time_out.Text += "image captured at time " + current_time + "\n";
+                        Log_info("Image captured at time ",current_time);
                         if(check==true)
                         {
-                        time_out.Text += "minutes updated to " + min + "\n";
+                            Log_mins("minutes updated to ",current_time,min);
+                            Res.Text += "current mins are set to: " + Convert.ToString(min) + "\n";
+                            logger.Information("current mins are set to:" + min, current_time);
                             check = false;
                         }
                         timer.Interval = (1000 * 60) * min;
@@ -115,6 +119,7 @@ namespace PC_Camera
                 catch(Exception ex)
                 {
                         time_out.Text += ex.ToString() + "\n";
+                        logger.Error(ex, current_time);
                     }
                 });
             }
@@ -122,7 +127,7 @@ namespace PC_Camera
             {
 
                 var image = ScreenCapture.CaptureDesktop();
-                image.Save(location + @"PC Images\"+dir + time + " PC.jpg", ImageFormat.Jpeg);
+                image.Save(location + dir + @"PC Images\" + time + " PC.jpg", ImageFormat.Jpeg);
 
                 {
                     /*
@@ -159,30 +164,56 @@ namespace PC_Camera
                 {
                 //image taker
                 cam.SetCamera(moniker, resolutions[0]);
-                cam.SnapshotSourceImage().Save(location + @"User Images\"+dir + time + " User.png");
+                cam.SnapshotSourceImage().Save(location+ dir + @"User Images\" + time + " User.png");
                 // cam.Dispose();
                 }
                 catch (Exception ex)
                 {
                     time_out.Text += ex.ToString() + "\n";
+                    logger.Error(ex, current_time);
                 }
 
             }
+           
+            void Log_info(string info,string time)
+            {
+                time_out.Text += info + time + "\n";
+                logger.Information(info, time);
+            }
+            void Log_mins(string info, string time,int mins)
+            {
+
+                time_out.Text += info + mins + "\n";
+                logger.Information(info + mins, time);
+            }
+            void DirCheck()
+            {
+                //checks for directories
+                if (!Directory.Exists(location + current_dir + @"PC Images\"))
+                {
+                    Directory.CreateDirectory(location + current_dir + @"PC Images\");
+                }
+                if (!Directory.Exists(location + current_dir + @"User Images\"))
+                {
+                    Directory.CreateDirectory(location + current_dir + @"User Images\");
+                }
+            }
 
         }
-
         private void Set_mins_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 min = Convert.ToInt32(mins_num.Text);
                 time_out.Text += "waiting for minutes to update... "+ "\n";
+                logger.Information("waiting for minutes to update... ", current_time);
                 mins_num.Text = "";
                 check = true;
             }
             catch(Exception ex)
             {
                 time_out.Text += ex.ToString() + "\n";
+                logger.Error(ex, current_time);
             }
         }
 
@@ -194,6 +225,7 @@ namespace PC_Camera
               
                 min = Convert.ToInt32(Def_Mins.Text);
                 time_out.Text += "waiting for minutes to update... " + "\n";
+                logger.Information("waiting for minutes to update... ", current_time);
                 Def_Mins.Text = "";
                 check = true;
                 if (!Directory.Exists(@"C:\Users\ghali\AppData\Local\Temp\PC Camera\"))
@@ -209,6 +241,7 @@ namespace PC_Camera
             catch (Exception ex)
             {
                 time_out.Text += ex.ToString() + "\n";
+                logger.Error(ex, current_time);
             }
         }
     }
