@@ -23,11 +23,10 @@ namespace PC_Camera
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-              MainWindow = new MainWindow();
-          
-            MainWindow.Closing += MainWindow_Closing;
             
+            MainWindow = new    MainWindow();
+            MainWindow.Closing += MainWindow_Closing;
+           
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.DoubleClick += (s, args) => ShowMainWindow();
             _notifyIcon.Icon =  PC_Camera.Properties.Resources.round_logo;

@@ -11,14 +11,17 @@
             <ColumnDefinition Width="101*"/>
             <ColumnDefinition Width="692*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="Res" HorizontalAlignment="Left" Height="345" Margin="10,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="Res" HorizontalAlignment="Left" Height="286" Margin="10,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="123" Grid.ColumnSpan="2"/>
         <TextBlock HorizontalAlignment="Left" Margin="356.2,24,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Height="22" Grid.Column="1"><Run Text="Time in Mins"/><Run Text=":"/></TextBlock>
         <TextBox x:Name="mins_num" HorizontalAlignment="Left" Height="23" Margin="470.2,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
         <Button x:Name="set_mins" Content="Set" HorizontalAlignment="Left" Margin="595.2,23,0,0" VerticalAlignment="Top" Width="53" Height="22" Click="Set_mins_Click" Grid.Column="1"/>
-        <TextBox x:Name="time_out" HorizontalAlignment="Left" Height="345" Margin="62.2,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="586" Grid.Column="1"/>
+        <TextBox x:Name="time_out" HorizontalAlignment="Left" Height="286" Margin="62.2,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="586" Grid.Column="1"/>
         <TextBlock HorizontalAlignment="Left" Margin="16,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Height="22" Grid.ColumnSpan="2" Text="Default Mins"/>
         <TextBox x:Name="Def_Mins" HorizontalAlignment="Left" Height="23" Margin="5.2,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
         <Button x:Name="Set_Def" Content="Set" HorizontalAlignment="Left" Margin="141.2,22,0,0" VerticalAlignment="Top" Width="53" Height="22" Grid.Column="1" Click="Set_Def_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="3,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Height="22" Text="Images Save Location" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="img_loc" HorizontalAlignment="Left" Height="23" Margin="32.2,59,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="249" Grid.Column="1"/>
+        <Button x:Name="img_loc_btn" Content="Set" HorizontalAlignment="Left" Margin="286.2,59,0,0" VerticalAlignment="Top" Width="53" Height="22" Grid.Column="1" Click="img_loc_btn_Click"/>
 
 
     </Grid>

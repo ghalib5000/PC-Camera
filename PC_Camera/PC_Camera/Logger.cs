@@ -18,6 +18,7 @@ namespace PC_Camera
            // Console.ForegroundColor = ConsoleColor.White;
            // Console.WriteLine(t);
             File.AppendAllText(logloc, t);
+            
         }
         public void Information(string info)
         {
@@ -55,6 +56,10 @@ namespace PC_Camera
           //  Console.WriteLine(data);
             File.AppendAllText(logloc, data);
             throw (error);
+        }
+        public bool Exsists()
+        {
+          return  File.Exists(logloc);
         }
 
     }
