@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BasicLogger, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Basic.Logger.1.0.3\lib\netstandard2.0\BasicLogger.dll</HintPath>
+    </Reference>
     <Reference Include="Camera_NET">
       <HintPath>Refs\Camera_NET.dll</HintPath>
     </Reference>
@@ -69,7 +72,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Logger.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
 using JsonMaker;
+using BasicLogger;
 
 namespace PC_Camera
 {
@@ -218,7 +219,7 @@ namespace PC_Camera
             void LogCheck()
             {
                 //checks for the log file
-                if(logger==null||!logger.Exsists())
+                if(logger==null||!logger.Exists())
                 {
                     logger = new Logger(img_path + current_dir + "log file.txt", current_time);
                 }
